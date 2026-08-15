@@ -1,0 +1,63 @@
+{
+  "users": [
+    {
+      "id": "USR-1700000000-001",
+      "username": "admin",
+      "email": "admin@doopedia.id",
+      "password": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "api_key": "DP-admin123456",
+      "balance": 1000000,
+      "total_order": 0,
+      "total_deposit": 0,
+      "twofa_enabled": 0,
+      "twofa_secret": null,
+      "registered_at": "2026-01-01 00:00:00"
+    },
+    {
+      "id": "USR-1700000000-002",
+      "username": "demo",
+      "email": "demo@doopedia.id",
+      "password": "89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8",
+      "api_key": "DP-demo123456",
+      "balance": 50000,
+      "total_order": 0,
+      "total_deposit": 0,
+      "twofa_enabled": 0,
+      "twofa_secret": null,
+      "registered_at": "2026-01-01 00:00:00"
+    }
+  ],
+  "sessions": [],
+  "orders": [],
+  "deposit_history": [],
+  "h2h_transactions": [],
+  "broadcast": [
+    {
+      "id": 1,
+      "title": "🎉 Selamat Datang di DooPedia!",
+      "message": "Halo semuanya! DooPedia sekarang sudah live. Nikmati layanan OTP tercepat dengan harga termurah. Jangan lupa deposit saldo untuk mulai order!",
+      "type": "success",
+      "is_active": 1,
+      "created_at": "2026-01-01 00:00:00",
+      "expires_at": "2027-01-01 00:00:00"
+    },
+    {
+      "id": 2,
+      "title": "⚠️ Maintenance Info",
+      "message": "Sistem akan maintenance setiap Minggu pukul 02.00-04.00 WIB. Mohon pengertiannya.",
+      "type": "warning",
+      "is_active": 1,
+      "created_at": "2026-01-01 00:00:00",
+      "expires_at": "2026-12-31 23:59:59"
+    },
+    {
+      "id": 3,
+      "title": "💡 Tips Penggunaan",
+      "message": "Pastikan saldo mencukupi sebelum order. Jika OTP tidak masuk dalam 5 menit, saldo akan otomatis dikembalikan.",
+      "type": "info",
+      "is_active": 1,
+      "created_at": "2026-01-01 00:00:00",
+      "expires_at": null
+    }
+  ]
+}
