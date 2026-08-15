@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>DooPedia | Solusi OTP & SMS Tanpa Batas</title>
+    
+    <link rel="icon" href="/doo/dp.png" type="image/png" />
+    <link rel="shortcut icon" href="/doo/dp.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/doo/dp.png" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <style>
+        /* ========================================== */
+        /* ROOT VARIABLES */
+        /* ========================================== */
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: rgba(255,255,255,0.03);
+            --bg-card-hover: rgba(0,136,255,0.06);
+            --text-primary: #e8edf5;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --border-color: rgba(255,255,255,0.05);
+            --border-hover: rgba(0,136,255,0.15);
+            --shadow: 0 8px 40px rgba(0,0,0,0.4);
+            --input-bg: rgba(255,255,255,0.03);
+            --gradient-primary: linear-gradient(135deg, #0088FF, #7c3aed);
+            --gradient-success: linear-gradient(135deg, #22c55e, #16a34a);
+            --glass-bg: rgba(255,255,255,0.03);
+            --glass-border: rgba(255,255,255,0.05);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent-color: #0088FF;
+            --accent-gradient: linear-gradient(135deg, #0088FF, #7c3aed);
+            --glow-color: rgba(0,136,255,0.3);
+        }
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(0,0,0,0.02);
+            --bg-card-hover: rgba(0,136,255,0.04);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: rgba(0,0,0,0.06);
+            --border-hover: rgba(0,136,255,0.2);
+            --shadow: 0 8px 40px rgba(0,0,0,0.06);
+            --input-bg: rgba(0,0,0,0.02);
+            --glass-bg: rgba(255,255,255,0.05);
+            --glass-border: rgba(0,0,0,0.05);
+            --glow-color: rgba(0,136,255,0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding-bottom: 80px;
+            overflow-x: hidden;
+            transition: all var(--transition);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-gradient); border-radius: 10px; }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+        }
+        .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ========================================== */
+        /* NAVBAR */
+        /* ========================================== */
+        .navbar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 10px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all var(--transition);
+        }
+        .navbar-inner {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.3px;
+            cursor: pointer;
+        }
+        .brand img { height: 32px; width: 32px; object-fit: contain; }
+        .brand span { color: var(--accent-color); }
+        .nav-actions { display: flex; align-items: center; gap: 6px; }
+
+        /* ========================================== */
+        /* BUTTONS */
+        /* ========================================== */
+        .btn {
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: #ffffff;
+            box-shadow: 0 4px 15px var(--glow-color);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--glow-color);
+        }
+        .btn-ghost {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-ghost:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+        .btn-success {
+            background: var(--gradient-success);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(34,197,94,0.25);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(34,197,94,0.35);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: #ffffff;
+        }
+        .btn-sm { padding: 5px 12px; font-size: 11px; }
+        .btn-full { width: 100%; justify-content: center; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+
+        /* ========================================== */
+        /* THEME TOGGLE */
+        /* ========================================== */
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+        .theme-toggle:hover {
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+        .theme-toggle i { font-size: 14px; }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 4px 10px 4px 8px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        .user-badge:hover { border-color: var(--border-hover); }
+        .user-badge .username {
+            color: var(--text-primary);
+            font-weight: 600;
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .btn-logout {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            padding: 2px 4px;
+            transition: var(--transition);
+        }
+        .btn-logout:hover { color: #ef4444; }
+
+        /* ========================================== */
+        /* PAGES */
+        /* ========================================== */
+        .page {
+            display: none;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 16px;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0 4px;
+        }
+        .page-header h2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .balance {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 4px 12px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+        .balance span { color: #22c55e; font-weight: 700; }
+        .balance i { margin-right: 4px; color: var(--accent-color); }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 10px 0 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+        }
+        .section-title i { color: var(--accent-color); }
+        .section-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 9px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            margin: 6px 0 10px;
+            transition: var(--transition);
+        }
+        .search-box:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            background: rgba(0,136,255,0.03);
+            box-shadow: 0 0 0 3px var(--glow-color);
+        }
+        .search-box::placeholder { color: var(--text-muted); }
+
+        /* ========================================== */
+        /* HERO TILT EFFECT - 3 FOTO (HOVER 3D) */
+        /* ========================================== */
+        .tilt-wrapper {
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .tilt-card {
+            width: 100%;
+            max-width: 180px;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            padding: 4px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            /* Diam saat awal */
+            transform: rotateX(0) rotateY(0) scale(1);
+        }
+        .tilt-card:hover {
+            transform: rotateY(-10deg) rotateX(5deg) scale(1.05);
+            box-shadow: 0 20px 40px var(--glow-color);
+            border-color: var(--accent-color);
+        }
+        .tilt-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* ========================================== */
+        /* HERO SLIDER - DASHBOARD (4,5,6) */
+        /* ========================================== */
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border-radius: var(--radius);
+            aspect-ratio: 16 / 9;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+        .hero-slider .slides {
+            display: flex;
+            transition: transform 0.8s ease-in-out;
+            height: 100%;
+        }
+        .hero-slider .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            padding: 10px;
+        }
+        .hero-slider .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .hero-slider .indicators {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        .hero-slider .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .hero-slider .indicator.active {
+            background: var(--accent-color);
+            transform: scale(1.3);
+        }
+
+        /* ========================================== */
+        /* LANDING PAGE */
+        /* ========================================== */
+        .landing-hero {
+            text-align: center;
+            padding: 10px 16px 20px;
+        }
+        .landing-hero .badge-powered {
+            display: inline-block;
+            background: rgba(0,136,255,0.1);
+            border: 1px solid rgba(0,136,255,0.2);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .landing-hero h1 {
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        .landing-hero h1 .highlight {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .landing-hero .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto 16px;
+        }
+
+        .landing-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 400px;
+            margin: 0 auto 16px;
+        }
+        .landing-stats .stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 10px 6px;
+            text-align: center;
+        }
+        .landing-stats .stat-item .number {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-color);
+            display: block;
+        }
+        .landing-stats .stat-item .label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-demo {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .btn-demo:hover {
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .why-section { padding: 16px 0; }
+        .why-section .section-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .why-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 12px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .why-item:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--glow-color);
+        }
+        .why-item .icon-wrap {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(0,136,255,0.06);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 6px; font-size: 18px; color: var(--accent-color);
+        }
+        .why-item .title { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+        .why-item .desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+        .testimoni-section {
+            padding: 16px 0 8px;
+            scroll-margin-top: 80px;
+        }
+        .testimoni-section .section-label {
+            font-size: 11px; font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .testimoni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        .testimoni-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            transition: var(--transition);
+        }
+        .testimoni-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+        .testimoni-card .stars { color: #f59e0b; font-size: 12px; letter-spacing: 1px; margin-bottom: 4px; }
+        .testimoni-card .quote {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+        .testimoni-card .user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .testimoni-card .user .avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; color: #fff;
+        }
+        .testimoni-card .user .name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+        .testimoni-card .user .badge {
+            font-size: 8px; background: rgba(34,197,94,0.1);
+            color: #22c55e; padding: 1px 8px; border-radius: 10px; font-weight: 600;
+        }
+
+        .daftar-gratis {
+            text-align: center; padding: 20px 0 16px;
+            border-top: 1px solid var(--border-color); margin-top: 8px;
+        }
+        .daftar-gratis-text {
+            font-size: 20px; font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ========================================== */
+        /* SERVICE GRID */
+        /* ========================================== */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+            margin: 6px 0 12px;
+        }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .service-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 8px 25px var(--glow-color);
+        }
+        .service-card .service-img {
+            width: 40px; height: 40px; object-fit: contain;
+            margin: 0 auto 6px; display: block;
+            border-radius: 8px; background: var(--bg-card); padding: 4px;
+        }
+        .service-card .service-name {
+            font-size: 11px; font-weight: 600; margin-bottom: 2px;
+            color: var(--text-primary); overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap;
+        }
+        .service-card .service-price {
+            font-size: 13px; font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .service-card .service-country {
+            font-size: 9px; color: var(--text-muted); display: block; margin-top: 2px;
+        }
+
+        /* ========================================== */
+        /* ORDER FLOW */
+        /* ========================================== */
+        .order-flow-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            margin: 8px 0;
+            transition: var(--transition);
+        }
+        .order-flow-step.active {
+            border-color: var(--accent-color);
+            background: var(--bg-card-hover);
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+        .order-flow-step .step-label {
+            font-size: 10px; font-weight: 600;
+            color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+        }
+        .country-select-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; margin-top: 6px;
+        }
+        .country-select-btn {
+            padding: 6px 10px; border-radius: 6px;
+            border: 1px solid var(--border-color); background: var(--bg-card);
+            color: var(--text-secondary); font-size: 11px; cursor: pointer;
+            transition: var(--transition); font-family: 'Inter', sans-serif; text-align: center;
+        }
+        .country-select-btn:hover {
+            border-color: var(--accent-color); color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+        .country-select-btn.active {
+            border-color: var(--accent-color); background: var(--bg-card-hover);
+            color: var(--accent-color); font-weight: 600; box-shadow: 0 0 20px var(--glow-color);
+        }
+        .provider-select-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; margin-top: 6px;
+        }
+        .provider-select-btn {
+            padding: 8px 10px; border-radius: 6px;
+            border: 1px solid var(--border-color); background: var(--bg-card);
+            color: var(--text-secondary); font-size: 11px; cursor: pointer;
+            transition: var(--transition); font-family: 'Inter', sans-serif; text-align: center;
+        }
+        .provider-select-btn:hover {
+            border-color: var(--accent-color); color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+        .provider-select-btn.active {
+            border-color: var(--accent-color); background: var(--bg-card-hover);
+            color: var(--accent-color); font-weight: 600; box-shadow: 0 0 20px var(--glow-color);
+        }
+        .provider-select-btn .op-price { font-size: 12px; font-weight: 700; color: #22c55e; }
+        .provider-select-btn .op-stock { font-size: 9px; color: var(--text-muted); }
+
+        /* ========================================== */
+        /* DEPOSIT */
+        /* ========================================== */
+        .deposit-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 16px; margin: 12px 0;
+        }
+        .deposit-card .label {
+            font-size: 11px; font-weight: 600; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px;
+        }
+        .deposit-amount-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        }
+        .deposit-amount-btn {
+            padding: 10px 6px; border-radius: 8px;
+            border: 1px solid var(--border-color); background: var(--bg-card);
+            color: var(--text-secondary); cursor: pointer; transition: var(--transition);
+            font-family: 'Inter', sans-serif; text-align: center; font-size: 12px;
+        }
+        .deposit-amount-btn .amt { font-size: 14px; font-weight: 700; color: var(--text-primary); display: block; }
+        .deposit-amount-btn .desc { font-size: 9px; color: var(--text-muted); }
+        .deposit-amount-btn.active {
+            border-color: var(--accent-color); background: var(--bg-card-hover);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+        .deposit-amount-btn.active .amt { color: var(--accent-color); }
+        .qris-result {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 16px; margin: 12px 0; text-align: center;
+        }
+        .qris-result .qris-image { max-width: 200px; margin: 10px auto; display: block; border-radius: 8px; }
+        .qris-result .qris-amount { font-size: 20px; font-weight: 800; color: #22c55e; }
+        .qris-result .qris-status { font-size: 12px; color: #f59e0b; }
+
+        /* ========================================== */
+        /* PROFILE */
+        /* ========================================== */
+        .profile-container { text-align: center; padding: 20px 0; }
+        .profile-avatar-wrapper {
+            position: relative; width: 80px; height: 80px; margin: 0 auto 12px;
+        }
+        .profile-avatar-wrapper .profile-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: var(--accent-gradient); display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: 700; color: #ffffff; border: 3px solid var(--border-color);
+        }
+        .profile-name { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .profile-email { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+        .profile-balance { font-size: 15px; font-weight: 700; color: #22c55e; margin: 8px 0 12px; }
+        .profile-api-section {
+            margin-top: 12px; padding: 12px 16px; background: var(--bg-card);
+            border-radius: var(--radius); border: 1px solid var(--border-color); text-align: left;
+        }
+        .profile-api-section .api-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+        .profile-api-section .api-key { font-size: 14px; font-weight: 700; color: #22c55e; font-family: 'Courier New', monospace; word-break: break-all; }
+
+        /* ========================================== */
+        /* BROADCAST */
+        /* ========================================== */
+        .broadcast-container { margin: 8px 0 12px; }
+        .broadcast-item {
+            padding: 10px 14px; border-radius: var(--radius);
+            border: 1px solid var(--border-color); margin-bottom: 6px;
+            background: var(--bg-card); font-size: 13px; color: var(--text-primary);
+        }
+        .broadcast-item.broadcast-info { border-left: 3px solid var(--accent-color); }
+        .broadcast-item.broadcast-success { border-left: 3px solid #22c55e; }
+        .broadcast-item.broadcast-warning { border-left: 3px solid #f59e0b; }
+        .broadcast-item strong { display: block; margin-bottom: 2px; }
+
+        /* ========================================== */
+        /* AUTH MODAL */
+        /* ========================================== */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 999;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--radius); padding: 24px 20px; max-width: 380px; width: 92%;
+            max-height: 90vh; overflow-y: auto; animation: fadeIn 0.25s ease;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .modal-header h2 { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .modal-close {
+            background: none; border: none; color: var(--text-secondary);
+            font-size: 24px; cursor: pointer; line-height: 1; transition: var(--transition);
+        }
+        .modal-close:hover { color: var(--text-primary); transform: rotate(90deg); }
+        .auth-tabs {
+            display: flex; gap: 4px; background: var(--bg-card); border-radius: 8px; padding: 4px; margin-bottom: 16px;
+        }
+        .auth-tabs .tab {
+            flex: 1; padding: 7px; border: none; background: none;
+            color: var(--text-secondary); font-weight: 600; font-size: 12px;
+            border-radius: 6px; cursor: pointer; transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+        .auth-tabs .tab.active { background: var(--accent-gradient); color: #ffffff; }
+        .auth-form { display: none; flex-direction: column; gap: 12px; }
+        .auth-form.active { display: flex; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label {
+            font-size: 11px; font-weight: 600; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 0.3px;
+        }
+        .form-group input {
+            padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color);
+            background: var(--input-bg); color: var(--text-primary); font-size: 13px;
+            font-family: 'Inter', sans-serif; transition: var(--transition);
+        }
+        .form-group input:focus {
+            border-color: var(--accent-color); outline: none;
+            background: rgba(0,136,255,0.05); box-shadow: 0 0 0 3px var(--glow-color);
+        }
+        .form-group input::placeholder { color: var(--text-muted); }
+        .form-error { color: #ef4444; font-size: 11px; margin-top: -6px; }
+        .form-success { color: #22c55e; font-size: 11px; margin-top: -6px; }
+
+        /* ========================================== */
+        /* BOTTOM NAV */
+        /* ========================================== */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            border-top: 1px solid var(--glass-border); display: flex;
+            justify-content: space-around; align-items: center;
+            padding: 6px 0 env(safe-area-inset-bottom); z-index: 50;
+            max-width: 500px; margin: 0 auto;
+        }
+        .bottom-nav .nav-item {
+            background: none; border: none; color: var(--text-muted);
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            font-size: 9px; font-weight: 500; cursor: pointer; transition: var(--transition);
+            font-family: 'Inter', sans-serif; padding: 4px 6px; flex: 1; max-width: 65px;
+        }
+        .bottom-nav .nav-item i { font-size: 18px; transition: var(--transition); }
+        .bottom-nav .nav-item.active { color: var(--accent-color); }
+        .bottom-nav .nav-item.active i { transform: translateY(-2px); }
+
+        /* ========================================== */
+        /* TOAST */
+        /* ========================================== */
+        .toast-container {
+            position: fixed; top: 76px; left: 50%; transform: translateX(-50%);
+            z-index: 9999; max-width: 400px; width: 90%; animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-16px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .toast {
+            background: var(--bg-secondary); backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color); border-left: 3px solid var(--accent-color);
+            border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+            color: var(--text-primary); box-shadow: var(--shadow);
+        }
+        .toast .toast-text { flex: 1; font-size: 13px; }
+        .toast .toast-close {
+            background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer;
+            transition: var(--transition);
+        }
+        .toast .toast-close:hover { color: var(--text-primary); }
+        .toast-success { border-left-color: #22c55e; }
+        .toast-error { border-left-color: #ef4444; }
+        .toast-warning { border-left-color: #f59e0b; }
+        .toast-info { border-left-color: var(--accent-color); }
+
+        /* ========================================== */
+        /* RESPONSIVE */
+        /* ========================================== */
+        @media (max-width: 480px) {
+            .tilt-card { max-width: 140px; }
+            .service-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .bottom-nav .nav-item { font-size: 8px; max-width: 55px; }
+            .bottom-nav .nav-item i { font-size: 15px; }
+            .landing-hero h1 { font-size: 22px; }
+            .landing-stats { grid-template-columns: repeat(3, 1fr); }
+            .landing-stats .stat-item .number { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="brand" onclick="navigateTo('landing')">
+            <img src="/doo/logo.png" alt="DooPedia" />
+            Doo<span>Pedia</span>
+        </div>
+        <div class="nav-actions">
+            <div id="userInfo" style="display:none;">
+                <div class="user-badge">
+                    <i class="bi bi-person-circle" style="color:var(--accent-color);"></i>
+                    <span class="username" id="displayUsername">User</span>
+                    <button onclick="logoutUser()" class="btn-logout" title="Keluar"><i class="bi bi-box-arrow-right"></i></button>
+                </div>
+            </div>
+            <div id="authButtons">
+                <button onclick="openAuthModal('login')" class="btn btn-ghost btn-sm">Masuk</button>
+                <button onclick="openAuthModal('register')" class="btn btn-primary btn-sm">Daftar</button>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Ganti Tema">
+                <i class="bi bi-moon-fill" id="themeIcon"></i>
+                <span id="themeLabel">Dark</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2 id="authModalTitle">DooPedia</h2>
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+        </div>
+        <div class="auth-tabs">
+            <button class="tab active" data-tab="login" onclick="switchAuthTab('login')">Login</button>
+            <button class="tab" data-tab="register" onclick="switchAuthTab('register')">Daftar</button>
+        </div>
+        <form id="loginForm" class="auth-form active" onsubmit="loginUser(event)">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="email@example.com" required />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter password" required />
+            </div>
+            <div id="loginError" class="form-error"></div>
+            <button type="submit" class="btn btn-primary btn-full">Login</button>
+        </form>
+        <form id="registerForm" class="auth-form" onsubmit="registerUser(event)">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="registerUsername" placeholder="Username" required />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="registerEmail" placeholder="email@example.com" required />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="registerPassword" placeholder="Min 6 characters" required />
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="registerConfirmPassword" placeholder="Confirm password" required />
+            </div>
+            <div id="registerError" class="form-error"></div>
+            <div id="registerSuccess" class="form-success"></div>
+            <button type="submit" class="btn btn-primary btn-full">Daftar</button>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PAGE: LANDING -->
+<!-- ========================================== -->
+<div class="page active" id="pageLanding">
+    <div class="landing-hero">
+        <div class="badge-powered"><i class="bi bi-lightning-fill"></i> POWERED BY XSKYDDOO_YEA</div>
+        <h1>Solusi OTP & SMS <br /><span class="highlight">Tanpa Batas</span></h1>
+        <p class="subtitle">Dapatkan akses tak terbatas ke layanan verifikasi OTP dari berbagai platform. Cepat, aman, dan 100% anonim.</p>
+        
+        <!-- 3 HERO FOTO DENGAN TILT EFFECT (HOVER 3D) -->
+        <div class="tilt-wrapper">
+            <div class="tilt-card"><img src="/doo/hero1.png" alt="Hero 1" onerror="this.style.display='none'" /></div>
+            <div class="tilt-card"><img src="/doo/hero2.png" alt="Hero 2" onerror="this.style.display='none'" /></div>
+            <div class="tilt-card"><img src="/doo/hero3.png" alt="Hero 3" onerror="this.style.display='none'" /></div>
+        </div>
+        
+        <div class="landing-stats">
+            <div class="stat-item">
+                <span class="number" id="statUsers">0</span>
+                <span class="label">User Active</span>
+            </div>
+            <div class="stat-item">
+                <span class="number" id="statOTP">0</span>
+                <span class="label">OTP Success</span>
+            </div>
+            <div class="stat-item">
+                <span class="number" id="statCountries">0</span>
+                <span class="label">Countries</span>
+            </div>
+        </div>
+        <div class="cta-buttons">
+            <button class="btn btn-primary" onclick="openAuthModal('register')">
+                <i class="bi bi-rocket-takeoff-fill"></i> Mulai Sekarang
+            </button>
+            <button class="btn btn-demo" onclick="demoMode()">
+                <i class="bi bi-play-fill"></i> Demo
+            </button>
+        </div>
+    </div>
+    <div class="testimoni-section" id="testimoniSection">
+        <div class="section-label"><i class="bi bi-star-fill"></i> Testimoni Pengguna</div>
+        <div class="testimoni-grid" id="testimoniGrid"></div>
+    </div>
+    <div class="why-section">
+        <div class="section-title">Kenapa Memilih <span class="gradient-text">DooPedia</span>?</div>
+        <div class="why-grid">
+            <div class="why-item">
+                <div class="icon-wrap"><i class="bi bi-lightning-charge-fill"></i></div>
+                <div class="title">Cepat</div>
+                <div class="desc">OTP < 60 detik</div>
+            </div>
+            <div class="why-item">
+                <div class="icon-wrap"><i class="bi bi-shield-lock-fill"></i></div>
+                <div class="title">Aman</div>
+                <div class="desc">100% anonim</div>
+            </div>
+            <div class="why-item">
+                <div class="icon-wrap"><i class="bi bi-globe-asia-australia"></i></div>
+                <div class="title">Global</div>
+                <div class="desc">45+ negara</div>
+            </div>
+            <div class="why-item">
+                <div class="icon-wrap"><i class="bi bi-coin"></i></div>
+                <div class="title">Murah</div>
+                <div class="desc">Mulai Rp 5.000</div>
+            </div>
+            <div class="why-item">
+                <div class="icon-wrap"><i class="bi bi-arrow-repeat"></i></div>
+                <div class="title">Auto Refund</div>
+                <div class="desc">Garansi 5 menit</div>
+            </div>
+            <div class="why-item">
+                <div class="icon-wrap"><i class="bi bi-headset"></i></div>
+                <div class="title">24/7 Support</div>
+                <div class="desc">Admin online</div>
+            </div>
+        </div>
+    </div>
+    <div class="daftar-gratis">
+        <div class="daftar-gratis-text"><i class="bi bi-gift-fill"></i> Daftar Gratis</div>
+        <p style="font-size:12px;color:var(--text-muted);">Mulai perjalanan OTP Anda tanpa biaya pendaftaran</p>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PAGE: HOME (DASHBOARD) -->
+<!-- ========================================== -->
+<div class="page" id="pageHome">
+    <div class="page-header">
+        <h2>Dashboard</h2>
+        <div class="balance"><i class="bi bi-wallet2"></i> <span id="homeBalance">Rp 0</span></div>
+    </div>
+    
+    <!-- HERO SLIDER DASHBOARD (4,5,6) -->
+    <div id="dashboardHero" style="display:none;">
+        <div class="hero-slider" id="heroSlider">
+            <div class="slides" id="sliderSlides">
+                <div class="slide"><img src="/doo/hero4.png" alt="Hero 4" onerror="this.style.display='none'" /></div>
+                <div class="slide"><img src="/doo/hero5.png" alt="Hero 5" onerror="this.style.display='none'" /></div>
+                <div class="slide"><img src="/doo/hero6.png" alt="Hero 6" onerror="this.style.display='none'" /></div>
+            </div>
+            <div class="indicators" id="sliderIndicators"></div>
+        </div>
+    </div>
+    
+    <div id="broadcastContainer" class="broadcast-container"></div>
+    <div class="section-title"><i class="bi bi-grid"></i> Pilih Layanan</div>
+    <div class="section-sub">Tersedia dari <strong id="totalServiceDisplay">200+</strong> provider</div>
+    <input type="text" class="search-box" id="serviceSearch" placeholder="Cari layanan..." oninput="filterServices()" />
+    <div class="service-grid" id="servicesGrid">
+        <div class="loading-container" style="grid-column: 1 / -1;">
+            <div class="loading-spinner"></div>
+            <div class="loading-title">Memuat layanan<span class="loading-dots"></span></div>
+            <div class="loading-sub">Mohon tunggu sebentar</div>
+        </div>
+    </div>
+    <input type="hidden" id="selectedServiceId" value="" />
+    <div id="stepProvider" style="display:none;">
+        <div class="section-title"><i class="bi bi-flag"></i> Pilih Negara & Provider</div>
+        <div class="section-sub">Untuk layanan <span id="selectedServiceName" style="color:var(--accent-color);font-weight:700;"></span></div>
+        <div class="order-flow-step active">
+            <div class="step-label"><i class="bi bi-geo-alt-fill"></i> Pilih Negara</div>
+            <div class="step-content">
+                <div id="countryGrid" class="country-select-grid">
+                    <div class="loading-spinner" style="width:24px;height:24px;margin:10px auto;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="order-flow-step" id="stepProviderList">
+            <div class="step-label"><i class="bi bi-hdd-stack-fill"></i> Pilih Provider</div>
+            <div class="step-content">
+                <div id="providerGrid" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                    <span class="placeholder" style="color:var(--text-muted);font-size:12px;">Pilih negara terlebih dahulu</span>
+                </div>
+            </div>
+        </div>
+        <div class="order-flow-step" id="stepOrder">
+            <div class="step-label"><i class="bi bi-bag-check-fill"></i> Order</div>
+            <div class="step-content" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+                <span id="orderSummary" class="placeholder" style="color:var(--text-muted);font-size:12px;">Pilih provider untuk melihat detail</span>
+                <button class="btn btn-success btn-sm" id="btnOrder" style="display:none;" onclick="executeOrder()">
+                    <i class="bi bi-bag-check"></i> Order Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PAGE: DEPOSIT -->
+<!-- ========================================== -->
+<div class="page" id="pageDeposit">
+    <div class="page-header">
+        <h2><i class="bi bi-credit-card-fill" style="color:var(--accent-color);font-size:14px;"></i> Deposit</h2>
+        <div class="balance"><i class="bi bi-wallet2"></i> <span id="depositBalance">Rp 0</span></div>
+    </div>
+    <div class="deposit-card">
+        <div class="label"><i class="bi bi-cash-stack"></i> Pilih Nominal Deposit</div>
+        <div class="deposit-amount-grid">
+            <button class="deposit-amount-btn" onclick="selectDeposit(this, 5000)"><span class="amt">Rp 5.000</span><span class="desc">+0%</span></button>
+            <button class="deposit-amount-btn" onclick="selectDeposit(this, 10000)"><span class="amt">Rp 10.000</span><span class="desc">+0%</span></button>
+            <button class="deposit-amount-btn" onclick="selectDeposit(this, 25000)"><span class="amt">Rp 25.000</span><span class="desc">+0%</span></button>
+            <button class="deposit-amount-btn" onclick="selectDeposit(this, 50000)"><span class="amt">Rp 50.000</span><span class="desc">+0%</span></button>
+            <button class="deposit-amount-btn" onclick="selectDeposit(this, 100000)"><span class="amt">Rp 100.000</span><span class="desc">+0%</span></button>
+            <button class="deposit-amount-btn" onclick="selectDeposit(this, 250000)"><span class="amt">Rp 250.000</span><span class="desc">+0%</span></button>
+        </div>
+    </div>
+    <div class="deposit-note"><i class="bi bi-info-circle"></i> Minimal deposit <strong>Rp 5.000</strong>. Saldo otomatis masuk setelah pembayaran.</div>
+    <button class="btn btn-primary btn-full" onclick="createDeposit()" id="depositBtn">
+        <i class="bi bi-qr-code"></i> Buat QRIS
+    </button>
+    <div id="qrisResult"></div>
+</div>
+
+<!-- ========================================== -->
+<!-- PAGE: ORDER (PANDUAN) -->
+<!-- ========================================== -->
+<div class="page" id="pageOrder">
+    <div class="page-header">
+        <h2><i class="bi bi-book-fill" style="color:var(--accent-color);font-size:14px;"></i> Panduan Order</h2>
+    </div>
+    <div class="section-title"><i class="bi bi-list-ol"></i> Langkah-langkah</div>
+    <div class="section-sub">Klik setiap langkah untuk panduan lengkap</div>
+    <div class="guide-accordion" id="guideAccordion">
+        <div class="accordion-item" data-step="1">
+            <button class="accordion-header" onclick="toggleStep(1)">
+                <span class="step-number">1</span>
+                <span class="step-title">Daftar Akun</span>
+                <span class="step-icon"><i class="bi bi-chevron-down"></i></span>
+            </button>
+            <div class="accordion-body">
+                <div class="desc">Daftar akun dengan klik <strong>"Daftar"</strong> di pojok kanan atas.</div>
+            </div>
+        </div>
+        <div class="accordion-item" data-step="2">
+            <button class="accordion-header" onclick="toggleStep(2)">
+                <span class="step-number">2</span>
+                <span class="step-title">Login</span>
+                <span class="step-icon"><i class="bi bi-chevron-down"></i></span>
+            </button>
+            <div class="accordion-body">
+                <div class="desc">Login ke akun DooPedia yang sudah didaftarkan.</div>
+            </div>
+        </div>
+        <div class="accordion-item" data-step="3">
+            <button class="accordion-header" onclick="toggleStep(3)">
+                <span class="step-number">3</span>
+                <span class="step-title">Pilih Layanan</span>
+                <span class="step-icon"><i class="bi bi-chevron-down"></i></span>
+            </button>
+            <div class="accordion-body">
+                <div class="desc">Pilih layanan OTP dari halaman <strong>Home</strong>.</div>
+            </div>
+        </div>
+        <div class="accordion-item" data-step="4">
+            <button class="accordion-header" onclick="toggleStep(4)">
+                <span class="step-number">4</span>
+                <span class="step-title">Deposit Saldo</span>
+                <span class="step-icon"><i class="bi bi-chevron-down"></i></span>
+            </button>
+            <div class="accordion-body">
+                <div class="desc">Isi saldo melalui menu <strong>Deposit</strong>.</div>
+            </div>
+        </div>
+        <div class="accordion-item" data-step="5">
+            <button class="accordion-header" onclick="toggleStep(5)">
+                <span class="step-number">5</span>
+                <span class="step-title">Order & Terima OTP</span>
+                <span class="step-icon"><i class="bi bi-chevron-down"></i></span>
+            </button>
+            <div class="accordion-body">
+                <div class="desc">Order nomor virtual dan terima OTP <span class="highlight">kurang dari 60 detik</span>.</div>
+            </div>
+        </div>
+        <div class="accordion-item" data-step="6">
+            <button class="accordion-header" onclick="toggleStep(6)">
+                <span class="step-number">6</span>
+                <span class="step-title">Cek Riwayat</span>
+                <span class="step-icon"><i class="bi bi-chevron-down"></i></span>
+            </button>
+            <div class="accordion-body">
+                <div class="desc">Pantau semua transaksi di menu <strong>Activity</strong>.</div>
+            </div>
+        </div>
+    </div>
+    <div class="section-title" style="margin-top:12px;"><i class="bi bi-arrow-repeat" style="color:#22c55e;"></i> Auto Refund</div>
+    <div class="guide-card" style="border-left-color:#22c55e;border-left:3px solid #22c55e;">
+        <div class="desc"><span class="highlight">Saldo otomatis dikembalikan</span> jika OTP tidak masuk dalam <strong>5 menit</strong>.</div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PAGE: ACTIVITY -->
+<!-- ========================================== -->
+<div class="page" id="pageActivity">
+    <div class="page-header">
+        <h2><i class="bi bi-clock-history" style="color:var(--accent-color);font-size:14px;"></i> Riwayat Aktivitas</h2>
+    </div>
+    <div class="section-sub">Semua transaksi Anda</div>
+    <div class="section-title"><i class="bi bi-list-check"></i> Riwayat Order</div>
+    <div id="orderHistoryList">
+        <div class="empty-state" style="padding:20px 0;">
+            <i class="bi bi-inbox"></i>
+            <div class="title">Belum ada order</div>
+            <div class="desc">Order OTP pertama Anda!</div>
+        </div>
+    </div>
+    <div class="section-title" style="margin-top:16px;"><i class="bi bi-credit-card"></i> Riwayat Deposit</div>
+    <div id="depositHistoryList">
+        <div class="empty-state" style="padding:20px 0;">
+            <i class="bi bi-clock-history"></i>
+            <div class="title">Belum ada deposit</div>
+            <div class="desc">Deposit saldo pertama Anda!</div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PAGE: PROFILE -->
+<!-- ========================================== -->
+<div class="page" id="pageProfile">
+    <div class="profile-container" id="profileContainer">
+        <div style="padding:20px 0;color:var(--text-muted);">
+            <i class="bi bi-person" style="font-size:40px;display:block;margin-bottom:8px;"></i>
+            <p>Silakan login untuk melihat profil</p>
+            <button onclick="openAuthModal('login')" class="btn btn-primary" style="margin-top:8px;">Login</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav">
+    <button class="nav-item active" data-page="landing" onclick="navigateTo('landing')" id="navLanding">
+        <i class="bi bi-house-fill"></i><span>Beranda</span>
+    </button>
+    <button class="nav-item" data-page="home" onclick="navigateTo('home')" id="navHome" style="display:none;">
+        <i class="bi bi-grid-fill"></i><span>Layanan</span>
+    </button>
+    <button class="nav-item" data-page="deposit" onclick="navigateTo('deposit')" id="navDeposit" style="display:none;">
+        <i class="bi bi-credit-card"></i><span>Deposit</span>
+    </button>
+    <button class="nav-item" data-page="order" onclick="navigateTo('order')" id="navOrder" style="display:none;">
+        <i class="bi bi-bag-fill"></i><span>Order</span>
+    </button>
+    <button class="nav-item" data-page="activity" onclick="navigateTo('activity')" id="navActivity" style="display:none;">
+        <i class="bi bi-clock-history"></i><span>Activity</span>
+    </button>
+    <button class="nav-item" data-page="profile" onclick="navigateTo('profile')" id="navProfile">
+        <i class="bi bi-person-fill"></i><span>Profile</span>
+    </button>
+</nav>
+
+<script>
+// ==========================================
+// DOOPEDIA - FULL CLIENT SCRIPT
+// ==========================================
+
+const API_BASE = '/api';
+let currentUser = null;
+let allServices = [];
+let selectedDepositAmount = 5000;
+let selectedService = null;
+let selectedCountry = null;
+let selectedProvider = null;
+let selectedOperator = null;
+let allCountries = [];
+let sliderInterval = null;
+
+// ==========================================
+// UTILITY
+// ==========================================
+function formatPrice(price) {
+    if (price === undefined || price === null) return '0';
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function showToast(message, type) {
+    type = type || 'info';
+    document.querySelectorAll('.toast-container').forEach(el => el.remove());
+    const container = document.createElement('div');
+    container.className = 'toast-container';
+    const classMap = { success: 'toast-success', error: 'toast-error', warning: 'toast-warning', info: 'toast-info' };
+    container.innerHTML = `
+        <div class="toast ${classMap[type] || 'toast-info'}">
+            <span class="toast-text">${message}</span>
+            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
+    `;
+    document.body.appendChild(container);
+    setTimeout(() => {
+        if (container.parentElement) {
+            container.style.opacity = '0';
+            setTimeout(() => container.remove(), 200);
+        }
+    }, 3500);
+}
+
+function getTheme() {
+    return localStorage.getItem('doopedia_theme') || 'dark';
+}
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('doopedia_theme', theme);
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+    if (theme === 'dark') {
+        icon.className = 'bi bi-moon-fill';
+        label.textContent = 'Dark';
+    } else {
+        icon.className = 'bi bi-sun-fill';
+        label.textContent = 'Light';
+    }
+}
+
+function toggleTheme() {
+    setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+}
+
+// ==========================================
+// HERO TILT EFFECT (HOVER 3D OTOMATIS)
+// ==========================================
+function initTilt() {
+    const cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(card => {
+        // Desktop: mouse move
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -12;
+            const rotateY = ((x - centerX) / centerX) * 12;
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            card.style.boxShadow = `0 30px 60px var(--glow-color)`;
+            card.style.borderColor = `var(--accent-color)`;
+        });
+        // Mouse leave
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+            card.style.boxShadow = 'none';
+            card.style.borderColor = 'var(--border-color)';
+        });
+        // Mobile: touch move
+        card.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const rect = card.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -12;
+            const rotateY = ((x - centerX) / centerX) * 12;
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            card.style.boxShadow = `0 30px 60px var(--glow-color)`;
+            card.style.borderColor = `var(--accent-color)`;
+        }, { passive: true });
+        // Touch end
+        card.addEventListener('touchend', () => {
+            card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+            card.style.boxShadow = 'none';
+            card.style.borderColor = 'var(--border-color)';
+        });
+    });
+}
+
+// ==========================================
+// HERO SLIDER (DASHBOARD)
+// ==========================================
+function initHeroSlider() {
+    const slidesContainer = document.getElementById('sliderSlides');
+    const indicatorsContainer = document.getElementById('sliderIndicators');
+    if (!slidesContainer) return;
+    const slides = slidesContainer.querySelectorAll('.slide');
+    if (slides.length === 0) return;
+    for (let i = 0; i < slides.length; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'indicator' + (i === 0 ? ' active' : '');
+        dot.dataset.index = i;
+        dot.onclick = () => goToSlide(i);
+        indicatorsContainer.appendChild(dot);
+    }
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    function goToSlide(index) {
+        currentSlide = index;
+        slidesContainer.style.transform = `translateX(-${index * 100}%)`;
+        document.querySelectorAll('.indicator').forEach((d, i) => {
+            d.classList.toggle('active', i === index);
+        });
+    }
+    function nextSlide() {
+        goToSlide((currentSlide + 1) % totalSlides);
+    }
+    if (sliderInterval) clearInterval(sliderInterval);
+    sliderInterval = setInterval(nextSlide, 3000);
+    const slider = document.getElementById('heroSlider');
+    slider.addEventListener('mouseenter', () => clearInterval(sliderInterval));
+    slider.addEventListener('mouseleave', () => {
+        if (sliderInterval) clearInterval(sliderInterval);
+        sliderInterval = setInterval(nextSlide, 3000);
+    });
+    window.goToSlide = goToSlide;
+    window.nextSlide = nextSlide;
+}
+
+// ==========================================
+// AUTH
+// ==========================================
+function openAuthModal(tab) {
+    document.getElementById('authModal').classList.add('active');
+    switchAuthTab(tab || 'login');
+}
+
+function closeAuthModal() {
+    document.getElementById('authModal').classList.remove('active');
+}
+
+function switchAuthTab(tab) {
+    document.querySelectorAll('.auth-tabs .tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    document.getElementById(tab + 'Form').classList.add('active');
+    document.getElementById('authModalTitle').textContent = tab === 'login' ? 'Login' : 'Daftar';
+}
+
+async function registerUser(e) {
+    e.preventDefault();
+    const username = document.getElementById('registerUsername').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value;
+    const confirm = document.getElementById('registerConfirmPassword').value;
+    const errorEl = document.getElementById('registerError');
+    const successEl = document.getElementById('registerSuccess');
+    errorEl.textContent = '';
+    successEl.textContent = '';
+    if (password !== confirm) {
+        errorEl.textContent = 'Password tidak cocok';
+        return;
+    }
+    if (password.length < 6) {
+        errorEl.textContent = 'Password minimal 6 karakter';
+        return;
+    }
+    try {
+        const response = await fetch(`${API_BASE}/user?route=register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+            successEl.textContent = '✅ Registrasi berhasil! Silakan login.';
+            setTimeout(() => {
+                closeAuthModal();
+                openAuthModal('login');
+            }, 1500);
+        } else {
+            errorEl.textContent = '❌ ' + data.message;
+        }
+    } catch (error) {
+        errorEl.textContent = 'Error: ' + error.message;
+    }
+}
+
+async function loginUser(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const errorEl = document.getElementById('loginError');
+    errorEl.textContent = '';
+    try {
+        const response = await fetch(`${API_BASE}/user?route=login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+            localStorage.setItem('token', data.data.token);
+            localStorage.setItem('user', JSON.stringify(data.data.user));
+            currentUser = data.data.user;
+            closeAuthModal();
+            updateUI();
+            showToast('Login berhasil, selamat datang @' + currentUser.username, 'success');
+            loadBalance();
+            navigateTo('home');
+        } else {
+            errorEl.textContent = '❌ ' + data.message;
+        }
+    } catch (error) {
+        errorEl.textContent = 'Error: ' + error.message;
+    }
+}
+
+async function logoutUser() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        await fetch(`${API_BASE}/user?route=logout`, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    currentUser = null;
+    updateUI();
+    navigateTo('landing');
+    showToast('Logout berhasil', 'info');
+}
+
+// ==========================================
+// UI UPDATE
+// ==========================================
+function updateUI() {
+    const userInfo = document.getElementById('userInfo');
+    const authButtons = document.getElementById('authButtons');
+    const container = document.getElementById('profileContainer');
+    const dashboardHero = document.getElementById('dashboardHero');
+    const navHome = document.getElementById('navHome');
+    const navDeposit = document.getElementById('navDeposit');
+    const navOrder = document.getElementById('navOrder');
+    const navActivity = document.getElementById('navActivity');
+    const navLanding = document.getElementById('navLanding');
+
+    if (currentUser) {
+        userInfo.style.display = 'flex';
+        authButtons.style.display = 'none';
+        document.getElementById('displayUsername').textContent = currentUser.username;
+        if (dashboardHero) dashboardHero.style.display = 'block';
+        if (navHome) navHome.style.display = 'flex';
+        if (navDeposit) navDeposit.style.display = 'flex';
+        if (navOrder) navOrder.style.display = 'flex';
+        if (navActivity) navActivity.style.display = 'flex';
+        if (navLanding) navLanding.style.display = 'none';
+        const bal = formatPrice(currentUser.balance || 0);
+        container.innerHTML = `
+            <div class="profile-container">
+                <div class="profile-avatar-wrapper">
+                    <div class="profile-avatar">${currentUser.username.charAt(0).toUpperCase()}</div>
+                </div>
+                <div class="profile-name">${currentUser.username}</div>
+                <div class="profile-email">${currentUser.email}</div>
+                <div class="profile-balance">Balance: Rp ${bal}</div>
+                <div class="profile-id">User ID: ${currentUser.id || '-'}</div>
+                <div class="profile-actions">
+                    <button onclick="logoutUser()" class="btn btn-danger btn-sm">Logout</button>
+                </div>
+                <div class="profile-api-section">
+                    <div class="api-label">API Key</div>
+                    <div class="api-key">${currentUser.api_key || 'DP-xxxxxx'}</div>
+                </div>
+            </div>
+        `;
+    } else {
+        userInfo.style.display = 'none';
+        authButtons.style.display = 'flex';
+        if (dashboardHero) dashboardHero.style.display = 'none';
+        container.innerHTML = `
+            <div style="padding:20px 0;color:var(--text-muted);">
+                <i class="bi bi-person" style="font-size:40px;display:block;margin-bottom:8px;"></i>
+                <p>Silakan login untuk melihat profil</p>
+                <button onclick="openAuthModal('login')" class="btn btn-primary" style="margin-top:8px;">Login</button>
+            </div>
+        `;
+        if (navHome) navHome.style.display = 'none';
+        if (navDeposit) navDeposit.style.display = 'none';
+        if (navOrder) navOrder.style.display = 'none';
+        if (navActivity) navActivity.style.display = 'none';
+        if (navLanding) navLanding.style.display = 'flex';
+    }
+}
+
+// ==========================================
+// ANIMASI STATISTIK
+// ==========================================
+function animateStats() {
+    const stats = [
+        { el: document.getElementById('statUsers'), target: 10500, suffix: 'K', decimals: 1 },
+        { el: document.getElementById('statOTP'), target: 99800, suffix: 'K', decimals: 1 },
+        { el: document.getElementById('statCountries'), target: 45, suffix: '', decimals: 0 }
+    ];
+    stats.forEach(stat => {
+        if (!stat.el) return;
+        let current = 0;
+        const duration = 2500;
+        const steps = 70;
+        const increment = stat.target / steps;
+        let step = 0;
+        const interval = setInterval(() => {
+            step++;
+            current += increment;
+            if (step >= steps) {
+                current = stat.target;
+                clearInterval(interval);
+            }
+            if (stat.decimals === 0) {
+                stat.el.textContent = Math.floor(current) + stat.suffix;
+            } else {
+                stat.el.textContent = (current / 1000).toFixed(1) + stat.suffix;
+            }
+        }, duration / steps);
+    });
+}
+
+// ==========================================
+// TESTIMONIALS
+// ==========================================
+const testimonials = [
+    { name: "Andi", badge: "User Pro", quote: "Layanan cepat dan terpercaya. Udah pake 3 bulan ga pernah gagal." },
+    { name: "Budi", badge: "User Premium", quote: "Harga murah tapi kualitas oke. Rekomendasi banget buat yang butuh OTP." },
+    { name: "Caca", badge: "User Unlimited", quote: "Support cepat dan ramah. Ga nyesel pake DooPedia." },
+    { name: "Dedi", badge: "User Pro", quote: "OTP masuk cepet banget, kurang dari 10 detik. Mantap!" },
+    { name: "Eni", badge: "User Premium", quote: "Udah coba 5 layanan lain, DooPedia paling oke harganya." },
+    { name: "Fajar", badge: "User Unlimited", quote: "Bisa dipake buat verifikasi berbagai platform. Sangat berguna." },
+    { name: "Gita", badge: "User Pro", quote: "Admin fast response. Bener-bener reliable banget." },
+    { name: "Hendra", badge: "User Premium", quote: "Auto refund works! Ga nyesel pake DooPedia." },
+    { name: "Ira", badge: "User Unlimited", quote: "Layanan terbaik untuk OTP. Rekomended!" },
+    { name: "Joko", badge: "User Pro", quote: "DooPedia emang juara. Udah setahun pake ga pernah masalah." }
+];
+
+function renderTestimonials() {
+    const grid = document.getElementById('testimoniGrid');
+    if (!grid) return;
+    grid.innerHTML = testimonials.map(t => `
+        <div class="testimoni-card">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <div class="quote">"${t.quote}"</div>
+            <div class="user">
+                <div class="avatar">${t.name.charAt(0)}</div>
+                <span class="name">${t.name}</span>
+                <span class="badge">${t.badge}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+function navigateTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page' + page.charAt(0).toUpperCase() + page.slice(1));
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
+    const navBtn = document.querySelector('.bottom-nav .nav-item[data-page="' + page + '"]');
+    if (navBtn) navBtn.classList.add('active');
+    if (page === 'home') {
+        loadServices();
+        loadBalance();
+        loadBroadcast();
+        initHeroSlider();
+        document.getElementById('stepProvider').style.display = 'none';
+        document.getElementById('servicesGrid').style.display = 'grid';
+        document.getElementById('serviceSearch').style.display = 'block';
+    }
+    if (page === 'deposit') loadBalance();
+    if (page === 'landing') {
+        renderTestimonials();
+        animateStats();
+        initTilt();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// ==========================================
+// LOAD BALANCE & BROADCAST
+// ==========================================
+async function loadBalance() {
+    if (!currentUser) return;
+    try {
+        const response = await fetch(`${API_BASE}/user?route=balance&user_id=${currentUser.id}`);
+        const data = await response.json();
+        if (data.status === 'success') {
+            const balance = data.data.balance;
+            document.getElementById('homeBalance').textContent = 'Rp ' + formatPrice(balance);
+            document.getElementById('depositBalance').textContent = 'Rp ' + formatPrice(balance);
+            currentUser.balance = balance;
+        }
+    } catch (error) {}
+}
+
+async function loadBroadcast() {
+    try {
+        const response = await fetch(`${API_BASE}/broadcast`);
+        const data = await response.json();
+        if (data.status === 'success' && data.data.length > 0) {
+            renderBroadcast(data.data);
+        }
+    } catch (error) {}
+}
+
+function renderBroadcast(broadcasts) {
+    const container = document.getElementById('broadcastContainer');
+    if (!container) return;
+    container.innerHTML = broadcasts.map(b => `
+        <div class="broadcast-item broadcast-${b.type}">
+            <strong>${b.title}</strong>
+            <span>${b.message}</span>
+        </div>
+    `).join('');
+}
+
+// ==========================================
+// SERVICES
+// ==========================================
+async function loadServices() {
+    const grid = document.getElementById('servicesGrid');
+    grid.innerHTML = `
+        <div class="loading-container" style="grid-column: 1 / -1;">
+            <div class="loading-spinner"></div>
+            <div class="loading-title">Memuat layanan<span class="loading-dots"></span></div>
+            <div class="loading-sub">Mohon tunggu sebentar</div>
+        </div>
+    `;
+    try {
+        const response = await fetch(`${API_BASE}/order?route=services`);
+        const data = await response.json();
+        if (data.status === 'success' && data.data) {
+            allServices = data.data;
+            renderServices(allServices);
+        }
+    } catch (error) {
+        grid.innerHTML = `<div class="empty-state"><i class="bi bi-wifi-off"></i><div class="title">Error: ${error.message}</div></div>`;
+    }
+}
+
+function renderServices(services) {
+    const grid = document.getElementById('servicesGrid');
+    if (services.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><i class="bi bi-search"></i><div class="title">Tidak ada layanan</div></div>';
+        return;
+    }
+    grid.innerHTML = services.map(s => `
+        <div class="service-card" onclick="selectService('${s.id}', '${s.name}', ${s.price})">
+            <div class="service-name">${s.name}</div>
+            <div class="service-price">Rp ${formatPrice(s.price)}</div>
+        </div>
+    `).join('');
+}
+
+function filterServices() {
+    const query = document.getElementById('serviceSearch').value.toLowerCase();
+    const filtered = allServices.filter(s => s.name.toLowerCase().includes(query));
+    renderServices(filtered);
+}
+
+// ==========================================
+// ORDER FLOW
+// ==========================================
+async function selectService(id, name, price) {
+    if (!currentUser) {
+        showToast('Silakan login terlebih dahulu', 'warning');
+        openAuthModal('login');
+        return;
+    }
+    selectedService = { id, name, price };
+    document.getElementById('selectedServiceName').textContent = name;
+    document.getElementById('selectedServiceId').value = id;
+    document.getElementById('stepProvider').style.display = 'block';
+    document.getElementById('servicesGrid').style.display = 'none';
+    document.getElementById('serviceSearch').style.display = 'none';
+    selectedCountry = null;
+    selectedProvider = null;
+    selectedOperator = null;
+    await loadCountriesForService(id);
+    document.getElementById('stepProvider').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function loadCountriesForService(serviceId) {
+    const grid = document.getElementById('countryGrid');
+    grid.innerHTML = '<div class="loading-spinner" style="width:24px;height:24px;margin:10px auto;"></div>';
+    try {
+        const response = await fetch(`${API_BASE}/order?route=countries&service_id=${serviceId}`);
+        const data = await response.json();
+        if (data.status === 'success' && data.data) {
+            allCountries = data.data;
+            grid.innerHTML = data.data.slice(0, 15).map(c => `
+                <button class="country-select-btn" onclick="selectCountry('${c.name}')" data-country="${c.name}">
+                    ${c.name}
+                    <span style="font-size:9px;color:var(--text-muted);display:block;">${c.prefix || ''}</span>
+                </button>
+            `).join('');
+            if (data.data.length === 1) selectCountry(data.data[0].name);
+        }
+    } catch (error) {
+        grid.innerHTML = `<span style="color:#ef4444;">❌ Error: ${error.message}</span>`;
+    }
+}
+
+function selectCountry(name) {
+    selectedCountry = { name };
+    selectedProvider = null;
+    selectedOperator = null;
+    document.querySelectorAll('.country-select-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.country === name);
+    });
+    document.getElementById('stepProviderList').classList.add('active');
+    document.getElementById('stepOrder').classList.remove('active');
+    document.getElementById('btnOrder').style.display = 'none';
+    document.getElementById('orderSummary').textContent = 'Memuat provider...';
+    loadProvidersForCountry(name);
+}
+
+async function loadProvidersForCountry(country) {
+    const grid = document.getElementById('providerGrid');
+    grid.innerHTML = '<div class="loading-spinner" style="width:24px;height:24px;margin:10px auto;"></div>';
+    try {
+        const response = await fetch(`${API_BASE}/order?route=providers&country=${encodeURIComponent(country)}`);
+        const data = await response.json();
+        if (data.status === 'success' && data.data) {
+            grid.innerHTML = data.data.map(p => `
+                <button class="provider-select-btn" onclick="selectProvider('${p.id}', ${p.price})">
+                    <div class="op-price">Rp ${formatPrice(p.price)}</div>
+                    <div class="op-stock">Stok: ${p.stock || 0}</div>
+                </button>
+            `).join('');
+        }
+    } catch (error) {
+        grid.innerHTML = `<span style="color:#ef4444;">❌ Error: ${error.message}</span>`;
+    }
+}
+
+function selectProvider(providerId, price) {
+    selectedProvider = providerId;
+    selectedOperator = { providerId, price };
+    document.querySelectorAll('.provider-select-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.provider === providerId);
+    });
+    document.getElementById('stepOrder').classList.add('active');
+    document.getElementById('btnOrder').style.display = 'flex';
+    document.getElementById('orderSummary').innerHTML = `
+        <strong style="color:var(--accent-color);">${document.getElementById('selectedServiceName').textContent}</strong> •
+        <strong>${selectedCountry.name}</strong> •
+        <strong style="color:#22c55e;">Rp ${formatPrice(price)}</strong>
+    `;
+}
+
+// ==========================================
+// EXECUTE ORDER
+// ==========================================
+async function executeOrder() {
+    if (!currentUser || !selectedService || !selectedCountry || !selectedProvider || !selectedOperator) {
+        showToast('Pilih layanan, negara, dan provider terlebih dahulu!', 'warning');
+        return;
+    }
+    const price = Number(selectedOperator.price);
+    const btn = document.getElementById('btnOrder');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Memproses...';
+    try {
+        const response = await fetch(`${API_BASE}/order?route=order`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: currentUser.id,
+                service_id: selectedService.id,
+                provider_id: selectedProvider,
+                operator_id: selectedOperator.providerId,
+                service_name: selectedService.name,
+                country: selectedCountry.name,
+                price: price
+            })
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+            showToast('✅ Order berhasil! Nomor: ' + data.data.phone, 'success');
+            document.getElementById('orderSummary').innerHTML = `
+                <div style="background:rgba(34,197,94,0.05);padding:10px;border-radius:8px;border:1px solid rgba(34,197,94,0.1);width:100%;">
+                    <div style="font-weight:700;color:#22c55e;">✅ Order Berhasil!</div>
+                    <div>Nomor: <strong>${data.data.phone}</strong></div>
+                    <div>Harga: <strong style="color:#22c55e;">Rp ${formatPrice(data.data.price)}</strong></div>
+                    <div>Order ID: ${data.data.order_id}</div>
+                </div>
+            `;
+            btn.style.display = 'none';
+            loadBalance();
+        } else {
+            showToast('❌ ' + data.message, 'error');
+        }
+    } catch (error) {
+        showToast('❌ Error: ' + error.message, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-bag-check"></i> Order Sekarang';
+    }
+}
+
+// ==========================================
+// DEPOSIT
+// ==========================================
+function selectDeposit(btn, amount) {
+    document.querySelectorAll('.deposit-amount-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedDepositAmount = amount;
+}
+
+async function createDeposit() {
+    if (!currentUser) {
+        showToast('Silakan login terlebih dahulu', 'warning');
+        openAuthModal('login');
+        return;
+    }
+    const btn = document.getElementById('depositBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Memproses...';
+    try {
+        const response = await fetch(`${API_BASE}/deposit?route=create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: currentUser.id,
+                amount: selectedDepositAmount
+            })
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+            document.getElementById('qrisResult').innerHTML = `
+                <div class="qris-result">
+                    <div class="qris-amount">Rp ${formatPrice(selectedDepositAmount)}</div>
+                    <div class="qris-status">Status: pending</div>
+                    <img src="${data.data.qr_code}" alt="QRIS" class="qris-image" />
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">ID Deposit: ${data.data.deposit_id}</div>
+                </div>
+            `;
+            showToast('QRIS berhasil dibuat!', 'success');
+        } else {
+            showToast('❌ ' + data.message, 'error');
+        }
+    } catch (error) {
+        showToast('❌ Error: ' + error.message, 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-qr-code"></i> Buat QRIS';
+    }
+}
+
+// ==========================================
+// GUIDE ACCORDION
+// ==========================================
+function toggleStep(step) {
+    document.querySelectorAll('.accordion-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.step == step);
+    });
+}
+
+// ==========================================
+// DEMO
+// ==========================================
+function demoMode() {
+    document.getElementById('testimoniSection').scrollIntoView({ behavior: 'smooth' });
+    showToast('🎬 Lihat testimoni pengguna!', 'info');
+}
+
+// ==========================================
+// INIT
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    setTheme(getTheme());
+    renderTestimonials();
+    animateStats();
+    initTilt();
+    initHeroSlider();
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    if (token && userStr) {
+        try {
+            currentUser = JSON.parse(userStr);
+            updateUI();
+            navigateTo('home');
+            loadServices();
+            loadBalance();
+            loadBroadcast();
+        } catch (e) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            navigateTo('landing');
+        }
+    } else {
+        navigateTo('landing');
+    }
+    console.log('[DooPedia] System loaded');
+});
+</script>
+</body>
+</html>
