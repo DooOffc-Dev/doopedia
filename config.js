@@ -15,7 +15,7 @@ export const RUMAHOTP = {
 };
 
 export const APP = {
-    baseUrl: 'https://doopedia.byethost7.com',
+    baseUrl: 'https://doopedia.vercel.app',
     name: 'DooPedia',
     version: '4.0.0',
     depositMin: 5000,
