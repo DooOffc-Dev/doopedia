@@ -9,10 +9,13 @@ export default async function handler(req, res) {
 
     const { route } = req.query;
 
-    // AMBIL PRODUCT / SERVICES
-    if (route === 'product') {
+    // AMBIL SERVICES (APLIKASI) DARI RUMAHOTP
+    if (route === 'services') {
         try {
-            const response = await fetch(`${RUMAHOTP.baseUrl}/v1/h2h/product`);
+            // Gunakan endpoint v2/services untuk mendapatkan gambar & nama aplikasi
+            const response = await fetch(`${RUMAHOTP.baseUrl}/v2/services`, { 
+                headers: { 'x-apikey': RUMAHOTP.apiKey } 
+            });
             const data = await response.json();
             return res.status(200).json({ status: 'success', data: data.data });
         } catch (error) {
