@@ -6,25 +6,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dbPath = path.resolve(__dirname, '../database.json');
 
+// Helper: Baca database JSON
 function getDB() {
     try {
         const data = readFileSync(dbPath, 'utf8');
         return JSON.parse(data);
     } catch (error) {
+        // Jika file belum ada, kembalikan struktur default
         return { users: [], sessions: [], orders: [], deposit_history: [], h2h_transactions: [], broadcast: [] };
     }
 }
 
+// Helper: Simpan database JSON
 function saveDB(data) {
     writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
 }
 
+// Helper: Generate ID
 function generateUserId() {
     return 'USR-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
-}
-
-function generateApiKey() {
-    return 'DP-' + Math.random().toString(36).substring(2, 10).toUpperCase();
 }
 
 export default async function handler(req, res) {
@@ -37,13 +37,14 @@ export default async function handler(req, res) {
 
     const { route } = req.query;
 
-    // REGISTER
+    // ==========================================
+    // 1. REGISTER
+    // ==========================================
     if (route === 'register' && req.method === 'POST') {
         try {
             const { username, email, password } = req.body;
             const db = getDB();
 
-            // Cek email udah ada
             if (db.users.find(u => u.email === email)) {
                 return res.status(400).json({ status: 'error', message: 'Email sudah terdaftar' });
             }
@@ -52,8 +53,8 @@ export default async function handler(req, res) {
                 id: generateUserId(),
                 username,
                 email,
-                password: password, // (Catatan: Di production, password harus di-hash pake bcrypt)
-                api_key: generateApiKey(),
+                password: password, // Di production, hash pake bcrypt
+                api_key: 'DP-' + Math.random().toString(36).substring(2, 10).toUpperCase(),
                 balance: 0,
                 total_order: 0,
                 total_deposit: 0,
@@ -72,11 +73,13 @@ export default async function handler(req, res) {
             });
         } catch (error) {
             console.error('[Register Error]', error.message);
-            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server: ' + error.message });
+            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server (Register)' });
         }
     }
 
-    // LOGIN
+    // ==========================================
+    // 2. LOGIN
+    // ==========================================
     if (route === 'login' && req.method === 'POST') {
         try {
             const { email, password } = req.body;
@@ -95,11 +98,13 @@ export default async function handler(req, res) {
             });
         } catch (error) {
             console.error('[Login Error]', error.message);
-            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server' });
+            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server (Login)' });
         }
     }
 
-    // BALANCE
+    // ==========================================
+    // 3. BALANCE
+    // ==========================================
     if (route === 'balance' && req.method === 'GET') {
         try {
             const { user_id } = req.query;
@@ -113,11 +118,13 @@ export default async function handler(req, res) {
                 data: { balance: user.balance }
             });
         } catch (error) {
-            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server' });
+            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server (Balance)' });
         }
     }
 
-    // CHANGE PASSWORD
+    // ==========================================
+    // 4. CHANGE PASSWORD
+    // ==========================================
     if (route === 'change_password' && req.method === 'POST') {
         try {
             const { user_id, old_password, new_password } = req.body;
@@ -134,7 +141,7 @@ export default async function handler(req, res) {
 
             return res.status(200).json({ status: 'success', message: 'Password berhasil diubah' });
         } catch (error) {
-            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server' });
+            return res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server (Change Password)' });
         }
     }
 
